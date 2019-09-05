@@ -1,0 +1,3 @@
+flask
+configparser
+flask_restplus
