@@ -67,12 +67,14 @@ class PublishLogs(Resource):
         payload = f"event_type='{event_type}' userid='{username}' "
         payload += f"target-hostname='{dest_host}' source_hostname='{source_host}'"
         message = hdr + payload
-        siem_ip = '10.111.5.141'
-        siem_port = 8008
+        parser.read('app.config', encoding='utf-8')
+        siem_ip = parser.get('siem', 'ip')
+        siem_port = int(parser.get('siem', 'port'))
         try:
             syslog(message, siem_ip, siem_port)
             return jsonify({
                 "result": "success",
+                "destination": f"{siem_ip}:{siem_port}/UDP",
                 "message": {
                     "payload_sent": message
                 }
@@ -80,6 +82,7 @@ class PublishLogs(Resource):
         except Exception as msg:
             return jsonify({
                 "result": "failure",
+                "destination": f"{siem_ip.strip("'")}:{siem_port}/UDP",
                 "message": {
                     "payload_sent": message
                 },
