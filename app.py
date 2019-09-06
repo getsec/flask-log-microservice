@@ -12,23 +12,22 @@ app = Flask(__name__)
 api = Api(
     app,
     title='Wawanesa Security Logging Microservice',
-    version='0.1')
+    version='1.0')
 log = api.namespace(
     'log',
     description='Used for logging to the SIEM')
 
-params =  {
+params = {
     'tool_name': fields.String(required=True),
     'event_type': fields.String(required=True),
     'username': fields.String(required=True),
     'source_host': fields.String(required=True),
     'dest_host': fields.String(required=True),
     'other': fields.String(required=True),
-    'port': fields.Integer()
-    }
+    'port': fields.Integer()}
 
-log_params = api.model('log_params', params
-)
+log_params = api.model('log_params', params)
+
 
 def syslog(message, siem_ip, siem_port):
     """
@@ -36,11 +35,11 @@ def syslog(message, siem_ip, siem_port):
     """
  
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.sendto(bytes(message, encoding='utf-8') , (siem_ip, siem_port))
+    sock.sendto(bytes(message, encoding='utf-8'), (siem_ip, siem_port))
     sock.close()
     
 
-@log.route("/pub",  doc={"description": "sends syslog"})
+@log.route("/pub", doc={"description": "sends syslog"})
 class PublishLogs(Resource):
     def get(self):
         expected_params = {}
@@ -51,7 +50,6 @@ class PublishLogs(Resource):
             "expected_json_payload": expected_params
 
         })
-    
     
     @api.expect(log_params)
     def post(self):
@@ -91,5 +89,5 @@ class PublishLogs(Resource):
 
 
 if __name__ == '__main__':
-    serve(app)
+    serve(app, port="8001")
     #app.run(host='0.0.0.0')
