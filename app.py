@@ -2,6 +2,7 @@ from flask_restplus import Resource, Api, fields
 from flask import Flask, request, jsonify
 from datetime import datetime
 from configparser import ConfigParser
+from waitress import serve
 import socket
 
 ### Load in config
@@ -62,7 +63,6 @@ class PublishLogs(Resource):
         dest_host = request.json.get('dest_host')
         username = request.json.get('username')
 
-
         hdr = f"Custom IS Security Toolset | {tool_name} | {time} | "
         payload = f"event_type='{event_type}' userid='{username}' "
         payload += f"target-hostname='{dest_host}' source_hostname='{source_host}'"
@@ -91,4 +91,5 @@ class PublishLogs(Resource):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    serve(app)
+    #app.run(host='0.0.0.0')
