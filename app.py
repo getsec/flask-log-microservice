@@ -82,7 +82,7 @@ class PublishLogs(Resource):
         except Exception as msg:
             return jsonify({
                 "result": "failure",
-                "destination": f"{siem_ip.strip("'")}:{siem_port}/UDP",
+                "destination": f"{siem_ip}:{siem_port}/UDP",
                 "message": {
                     "payload_sent": message
                 },
