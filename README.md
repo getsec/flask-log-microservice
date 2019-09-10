@@ -1,6 +1,6 @@
 # FLASK API - Logger
 ```
-I have no idea why I made this.
+Takes in HTTP, shits out syslog
 ```
 
 ## Log Ingesting
@@ -14,7 +14,7 @@ git clone <this_repo> && cd <this_repo>
 
 docker build -t  flask_logger .
 
-docker run -d -p5000:5000 flask_logger
+docker run -d -8001:8001 flask_logger
 
 docker ps
 ```
@@ -27,5 +27,5 @@ d714c689dac2        flask_logger        "python app.py"     About a minute ago
 
 ## API Docs
 1. Deploy docker container
-2. Go to the root directory on the machine
-    - Build in swagger docs exist there
+2. Go to the '/' once deployed.
+    - there is a swagger api doc that lives here!
